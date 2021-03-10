@@ -12,7 +12,7 @@ const arduino = require("johnny-five");
 const fs = require("fs");
 let html;
 
-let led = [true, true, false, true];
+let led = [false, false, false, false];
 let HIGH = 0x01;
 let LOW = 0x00;
 let board = new arduino.Board({
@@ -25,7 +25,7 @@ board.on("ready", () => {
         pin[i] = new arduino.Pin(i);
     }
 
-    board.loop(4000, () => {
+    board.loop(200, () => {
         main();
     });
 });
@@ -34,10 +34,6 @@ async function main() {
     for (let i = 0; i < led.length; i++) {
         let state = led[i] ? HIGH : LOW;
         pin[i + 2].write(state);
-    }
-
-    for (let i = 0; i < led.length; i++) {
-        led[i] = Math.random() > 0.5;
     }
 }
 
@@ -51,6 +47,32 @@ app.get("/", (req, res) => {
     res.status(200).send(
     )
 });
+
+app.post("/led", (req, res) => {
+    let {changeLed: changeLed} = req.body;
+    changeLed = eval(changeLed)
+    console.log(changeLed);
+    
+    if (changeLed > 3 || changeLed < 0) {
+        res.status(400).send("invalid LED");
+    }
+    
+    if (typeof(changeLed) == "number") {
+        led[changeLed] = !led[changeLed];
+    } else if (typeof(changeLed) == "object") {
+        for ( let i = 0; i < changeLed.length; i++) {
+            led[changeLed[i]] = !led[changeLed[i]];
+        }
+    } else {
+        res.status(401).send("invalid LED datatype")
+    }
+
+    res.send({
+        message:`changed Led ${changeLed}`,
+        newArray: led,
+        inputDataType: typeof(changeLed),
+    });
+})
 
 // fs.readFile("index.html", function (err, data) {
 //     if (err) throw err;
