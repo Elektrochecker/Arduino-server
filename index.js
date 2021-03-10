@@ -1,15 +1,17 @@
+const arduino = require("johnny-five");
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const app = express();
 const PORT = 8081;
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'web')));
 
 app.listen(
     PORT,
     () => console.log(`live at http://localhost:${PORT}`)
 )
 
-const arduino = require("johnny-five");
-const fs = require("fs");
 let html;
 
 let led = [false, false, false, false];
@@ -44,8 +46,7 @@ app.get("/led", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.status(200).send(
-    )
+    res.render("web/index.html");
 });
 
 app.post("/led", (req, res) => {
