@@ -1,11 +1,18 @@
-// const fs = require('fs');
+const express = require("express");
+const app = express();
+const PORT = 8081;
+app.use(express.json());
+
+app.listen(
+    PORT,
+    () => console.log(`live at http://localhost:${PORT}`)
+)
+
 const arduino = require("johnny-five");
+const fs = require("fs");
+let html;
 
 let led = [true, true, false, true];
-
-// file is included here:
-// eval(fs.readFileSync('java.js')+'');
-
 let HIGH = 0x01;
 let LOW = 0x00;
 let board = new arduino.Board({
@@ -18,7 +25,7 @@ board.on("ready", () => {
         pin[i] = new arduino.Pin(i);
     }
 
-    board.loop(200, () => {
+    board.loop(4000, () => {
         main();
     });
 });
@@ -33,3 +40,19 @@ async function main() {
         led[i] = Math.random() > 0.5;
     }
 }
+
+app.get("/led", (req, res) => {
+    res.status(200).send({
+        ledArray: led,
+    })
+});
+
+app.get("/", (req, res) => {
+    res.status(200).send(
+    )
+});
+
+// fs.readFile("index.html", function (err, data) {
+//     if (err) throw err;
+//     html = data.toString();
+// });
