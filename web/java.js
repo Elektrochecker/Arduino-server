@@ -1,16 +1,24 @@
+let led = [];
+
 function setup() {
   createCanvas(400, 400);
 }
 
 function draw() {
   background(200);
-  // text(`${httpGet("http://localhost:8080/led")}`,20,20)
 }
 
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
+async function getLedStatus() {
+  await fetch("http://localhost:8081/led")
+    .then(response => {
+      return response.json();
+    })
+    .then(result => {
+      console.log(result.ledArray)
+
+      for (let i = 0; i < result.ledArray.length; i++) {
+        led[i] = result.ledArray[i];
+      }
+    })
+    return led;
 }

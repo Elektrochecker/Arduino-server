@@ -18,7 +18,7 @@ let led = [false, false, false, false];
 let HIGH = 0x01;
 let LOW = 0x00;
 let board = new arduino.Board({
-    port: "COM3",
+    port: "COM5",
 });
 let pin = [];
 
@@ -49,7 +49,7 @@ app.get("/", (req, res) => {
     res.render("web/index.html");
 });
 
-app.post("/led", (req, res) => {
+app.post("/led/change", (req, res) => {
     let {changeLed: changeLed} = req.body;
     changeLed = eval(changeLed)
     console.log(changeLed);
