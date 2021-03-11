@@ -12,8 +12,6 @@ app.listen(
     () => console.log(`live at http://localhost:${PORT}`)
 )
 
-let html;
-
 let led = [false, false, false, false];
 let HIGH = 0x01;
 let LOW = 0x00;
@@ -46,6 +44,7 @@ app.get("/led", (req, res) => {
 });
 
 app.get("/", (req, res) => {
+    let { port:newCOM } = req.body
     res.render("web/index.html");
 });
 
@@ -65,7 +64,7 @@ app.post("/led/change", (req, res) => {
             led[changeLed[i]] = !led[changeLed[i]];
         }
     } else {
-        res.status(401).send("invalid LED datatype")
+        res.status(400).send("invalid LED datatype")
     }
 
     res.send({
@@ -85,6 +84,7 @@ app.post("/led/set", (req, res) => {
 
     led = newState;
     res.send({
-        message: `set LED to ${newState}`
+        message: `set LED to ${newState}`,
+        LedArray: newState,
     })
 })

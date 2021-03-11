@@ -1,7 +1,9 @@
 let led = [];
+let COM;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(80, 20);
+  // COM = prompt("Please enter the Port of the Arduino", "COM5")
 }
 
 function draw() {
