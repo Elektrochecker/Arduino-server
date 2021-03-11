@@ -9,8 +9,9 @@ function draw() {
   getLedStatus();
 
   for (var i = 0; i < led.length; i++) {
-    col = led[i] ? [200, 20, 20] : [0, 0, 0]
+    col = led[i] ? [200, 60, 30] : [0, 0, 0]
     fill(col)
+    noStroke()
     rect(i * 20, 0, 20, 20)
   }
 }

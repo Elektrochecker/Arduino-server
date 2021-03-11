@@ -75,7 +75,16 @@ app.post("/led/change", (req, res) => {
     });
 })
 
-// fs.readFile("index.html", function (err, data) {
-//     if (err) throw err;
-//     html = data.toString();
-// });
+app.post("/led/set", (req, res) => {
+    let {newState: newState} = req.body;
+    newState = eval(newState)
+    
+    if (typeof newState != "object" || newState.length != 4) {
+        res.status(401).send("invalid datatype")
+    }
+
+    led = newState;
+    res.send({
+        message: `set LED to ${newState}`
+    })
+})
