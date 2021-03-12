@@ -27,3 +27,19 @@ async function setLedStatus(newArray) {
     console.log(response)
   })
 }
+
+async function changeLedStatus(change) {
+  return await fetch("http://localhost:8081/led/change", {
+    method: "POST",
+    mode: "cors",
+    body: JSON.stringify({
+      changeLed: change,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then(response => {
+    console.log(response)
+  })
+}

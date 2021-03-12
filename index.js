@@ -51,8 +51,7 @@ app.get("/", (req, res) => {
 app.post("/led/change", (req, res) => {
     let {changeLed: changeLed} = req.body;
     changeLed = eval(changeLed)
-    console.log(changeLed);
-    
+
     if (changeLed > 3 || changeLed < 0) {
         res.status(400).send("invalid LED");
     }
