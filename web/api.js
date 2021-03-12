@@ -1,5 +1,5 @@
 async function getLedStatus() {
-  await fetch("http://localhost:8081/led", {
+  return await fetch("http://localhost:8081/led", {
     method: "GET",
   })
     .then(response => {
@@ -10,13 +10,18 @@ async function getLedStatus() {
         led[i] = result.ledArray[i];
       }
     })
-  return led;
 }
 
 async function setLedStatus(newArray) {
-  await fetch("http://localhost:8081/led/set", {
+  return await fetch("http://localhost:8081/led/set", {
     method: "POST",
-    body: `{"newState": "${newArray}"}`,
+    mode: "cors",
+    body: JSON.stringify({
+      newState: newArray,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
   })
   .then(response => {
     console.log(response)
