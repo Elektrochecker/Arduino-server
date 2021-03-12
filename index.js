@@ -3,13 +3,13 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const app = express();
-const PORT = 8081;
+const hostingPORT = 8081;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'web')));
 
 app.listen(
-    PORT,
-    () => console.log(`live at http://localhost:${PORT}`)
+    hostingPORT,
+    () => console.log(`live at http://localhost:${hostingPORT}`)
 )
 
 let led = [false, false, false, false];

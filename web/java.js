@@ -4,7 +4,7 @@ let scl = 20;
 
 function setup() {
   createCanvas(4 * scl, scl);
-  frameRate(8);
+  frameRate(2);
   // COM = prompt("Please enter the Port of the Arduino", "COM5")
 }
 
