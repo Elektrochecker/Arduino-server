@@ -7,6 +7,7 @@ function setup() {
 function draw() {
   background(200);
   getLedStatus();
+  frameRate(2);
 
   for (var i = 0; i < led.length; i++) {
     col = led[i] ? [200, 60, 30] : [0, 0, 0]
