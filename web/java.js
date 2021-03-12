@@ -1,9 +1,10 @@
 let led = [];
 let COM;
+let scl = 20;
 
 function setup() {
-  createCanvas(80, 20);
-  frameRate(2);
+  createCanvas(4 * scl, scl);
+  frameRate(8);
   // COM = prompt("Please enter the Port of the Arduino", "COM5")
 }
 
@@ -13,9 +14,19 @@ function draw() {
   frameRate(2);
 
   for (var i = 0; i < led.length; i++) {
-    col = led[i] ? [200, 60, 30] : [0, 0, 0]
+    col = led[i] ? [200, 60, 30] : [40, 40, 40]
     fill(col)
-    noStroke()
-    rect(i * 20, 0, 20, 20)
+    strokeWeight(2)
+    rect(i * scl, 0, scl, scl)
+  }
+}
+
+function mousePressed() {
+  if (mouseY > scl) {
+    return false;
+  } else {
+    x = Math.floor(mouseX / scl)
+    changeLedStatus(x)
+    return x;
   }
 }
