@@ -1,9 +1,10 @@
 const arduino = require("johnny-five");
-const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const app = express();
 const hostingPORT = 8081;
+const arduinoPort = "COM5";
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'web')));
 
@@ -16,7 +17,7 @@ let led = [false, false, false, false];
 let HIGH = 0x01;
 let LOW = 0x00;
 let board = new arduino.Board({
-    port: "COM5",
+    port: arduinoPort,
 });
 let pin = [];
 
