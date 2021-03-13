@@ -1,11 +1,10 @@
 let led = [];
-let COM;
-let scl = 20;
+let scl = 100;
 
 function setup() {
   createCanvas(4 * scl, scl);
   frameRate(2);
-  // COM = prompt("Please enter the Port of the Arduino", "COM5")
+  getLedStatus();
 }
 
 function draw() {
@@ -27,6 +26,5 @@ function mousePressed() {
   } else {
     x = Math.floor(mouseX / scl)
     changeLedStatus(x)
-    return x;
   }
 }
