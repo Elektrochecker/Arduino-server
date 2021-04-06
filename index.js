@@ -3,7 +3,7 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const hostingPORT = 8081;
-const arduinoPort = "COM5";
+const arduinoPort = "COM5"; //"COMX" or "AUTO" or ""
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'web')));
@@ -16,9 +16,16 @@ app.listen(
 let led = [false, false, false, false];
 let HIGH = 0x01;
 let LOW = 0x00;
-let board = new arduino.Board({
-    port: arduinoPort,
-});
+let board;
+
+if (arduinoPort == "AUTO" || arduinoPort == "") {
+    board = new arduino.Board();
+} else {
+    board = new arduino.Board({
+        port: arduinoPort,
+    });
+}
+
 let pin = [];
 
 board.on("ready", () => {
@@ -45,7 +52,7 @@ app.get("/led", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    let { port:newCOM } = req.body
+    // let { port:newCOM } = req.body
     res.render("web/index.html");
 });
 
