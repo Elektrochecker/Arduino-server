@@ -61,3 +61,15 @@ async function initialize(port) {
       // console.log(response)
     })
 }
+
+async function getInitializedStatus() {
+  return await fetch(`http://localhost:${localPORT}/init`, {
+      method: "GET",
+    })
+    .then(response => {
+      return response.json();
+    })
+    .then(result => {
+      initialized = (result.initialized);
+    })
+}

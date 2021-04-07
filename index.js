@@ -1,15 +1,18 @@
 const arduino = require("johnny-five");
 const path = require("path");
 const express = require("express");
+const cors = require("cors");
+const ip = require("ip");
 const app = express();
 const hostingPORT = 8081;
 
 app.use(express.json());
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'web')));
 
 app.listen(
-    hostingPORT,
-    () => console.log(`live at http://localhost:${hostingPORT}`)
+    hostingPORT, "0.0.0.0",
+    () => console.log(`live at http://localhost:${hostingPORT} \n or http://${ip.address()}:${hostingPORT}`)
 )
 
 let led = [false, false, false, false];
@@ -70,6 +73,18 @@ app.post("/init", (req, res) => {
     } = req.body;
     initBoard(port);
     res.status(200).send(`initialized on port &{port}`)
+})
+
+app.get("/init", (req, res) => {
+    if (!!board) {
+        res.status(200).send({
+            initialized: true,
+        });
+    } else {
+        res.status(200).send({
+            initialized: false,
+        });
+    }
 })
 
 app.post("/led/change", (req, res) => {

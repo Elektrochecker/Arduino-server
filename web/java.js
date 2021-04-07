@@ -1,11 +1,13 @@
 let led = [];
 let scl = 100;
-let initialized;
+let initialized = getInitializedStatus();
 
 function setup() {
-  initialized = initialize(
+  if (!initialized) {
+  initialize(
     prompt("port of Arduino: 'COMX' or 'AUTO'")
   )
+}
   createCanvas(4 * scl, scl);
   frameRate(2);
   getLedStatus();
