@@ -1,4 +1,4 @@
-let localPORT = 8081;
+let localPORT = 3000;
 
 async function getLedStatus() {
   return await fetch(`http://localhost:${localPORT}/led`, {
@@ -63,7 +63,7 @@ async function initialize(port) {
 }
 
 async function getInitializedStatus() {
-  return await fetch(`http://localhost:${localPORT}/init`, {
+  await fetch(`http://localhost:${localPORT}/init`, {
       method: "GET",
     })
     .then(response => {
@@ -71,5 +71,6 @@ async function getInitializedStatus() {
     })
     .then(result => {
       initialized = (result.initialized);
+      return result.initialized;
     })
 }
