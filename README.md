@@ -22,5 +22,5 @@ How to change the Arduino Port:
 How to change the localhost port (this shouldnt be necessary):
 1. open index.js
 2. change const hostingPORT = 8081; to fit your desired localhost port
-3. open /web/api.js and change the URIs accordingly
+3. open /web/api.js and change the localPORT accordingly
 4. save, exit and restart the program

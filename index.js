@@ -3,7 +3,6 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const hostingPORT = 8081;
-const arduinoPort = "COM5"; //"COMX" or "AUTO" or ""
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'web')));
@@ -17,26 +16,35 @@ let led = [false, false, false, false];
 let HIGH = 0x01;
 let LOW = 0x00;
 let board;
-
-if (arduinoPort == "AUTO" || arduinoPort == "") {
-    board = new arduino.Board();
-} else {
-    board = new arduino.Board({
-        port: arduinoPort,
-    });
-}
-
 let pin = [];
 
-board.on("ready", () => {
-    for (let i = 2; i <= 12; i++) {
-        pin[i] = new arduino.Pin(i);
+//"COMX" or "AUTO" or ""
+let initBoard = com => {
+    if (typeof eval(com) == "number") {
+        com = `COM${com}`
     }
+    if (com == "AUTO" || com == "") {
+        board = new arduino.Board();
+    } else {
+        board = new arduino.Board({
+            port: com,
+        });
+    }
+    runArduino();
+}
 
-    board.loop(200, () => {
-        main();
+let runArduino = () => {
+    console.log("running...")
+    board.on("ready", () => {
+        for (let i = 2; i <= 12; i++) {
+            pin[i] = new arduino.Pin(i);
+        }
+
+        board.loop(200, () => {
+            main();
+        });
     });
-});
+}
 
 async function main() {
     for (let i = 0; i < led.length; i++) {
@@ -56,18 +64,28 @@ app.get("/", (req, res) => {
     res.render("web/index.html");
 });
 
+app.post("/init", (req, res) => {
+    let {
+        port: port
+    } = req.body;
+    initBoard(port);
+    res.status(200).send(`initialized on port &{port}`)
+})
+
 app.post("/led/change", (req, res) => {
-    let {changeLed: changeLed} = req.body;
+    let {
+        changeLed: changeLed
+    } = req.body;
     changeLed = eval(changeLed)
 
     if (changeLed > 3 || changeLed < 0) {
         res.status(400).send("invalid LED");
     }
-    
-    if (typeof(changeLed) == "number") {
+
+    if (typeof (changeLed) == "number") {
         led[changeLed] = !led[changeLed];
-    } else if (typeof(changeLed) == "object") {
-        for ( let i = 0; i < changeLed.length; i++) {
+    } else if (typeof (changeLed) == "object") {
+        for (let i = 0; i < changeLed.length; i++) {
             led[changeLed[i]] = !led[changeLed[i]];
         }
     } else {
@@ -75,16 +93,18 @@ app.post("/led/change", (req, res) => {
     }
 
     res.send({
-        message:`changed Led ${changeLed}`,
+        message: `changed Led ${changeLed}`,
         newArray: led,
-        inputDataType: typeof(changeLed),
+        inputDataType: typeof (changeLed),
     });
 })
 
 app.post("/led/set", (req, res) => {
-    let {newState: newState} = req.body;
+    let {
+        newState: newState
+    } = req.body;
     newState = eval(newState)
-    
+
     if (typeof newState != "object" || newState.length != 4) {
         res.status(401).send("invalid datatype")
     }
