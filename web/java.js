@@ -1,17 +1,20 @@
 let led = [];
 let scl = 100;
 let initialized = getInitializedStatus();
+let message = document.getElementById("messageText");
 
 async function setup() {
   await getInitializedStatus();
-  setTimeout(() => {
-    if (!initialized) {
-    initialize(
+  if (!initialized) {
+    message.innerHTML = "awaiting initialization"
+    await initialize(
       prompt("port of Arduino:")
     )
+    message.innerHTML = "running..."
+  } else {
+    message.innerHTML = "running..."
   }
-  }, 100)
-  
+
   createCanvas(4 * scl, scl);
   frameRate(2);
   getLedStatus();
@@ -35,6 +38,17 @@ function mousePressed() {
     return false;
   } else {
     x = Math.floor(mouseX / scl)
+    changeLedStatus(x)
+  }
+}
+
+function touchStarted() {
+  let y = touches[0].y;
+  let x = touches[0].x;
+  if (y > scl) {
+    return false;
+  } else {
+    x = Math.floor(x / scl)
     changeLedStatus(x)
   }
 }

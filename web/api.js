@@ -12,6 +12,9 @@ async function getLedStatus() {
         led[i] = result.ledArray[i];
       }
     })
+    .catch(err => {
+      message.innerHTML = err
+    })
 }
 
 async function setLedStatus(newArray) {
@@ -27,6 +30,9 @@ async function setLedStatus(newArray) {
     })
     .then(response => {
       // console.log(response)
+    })
+    .catch(err => {
+      message.innerHTML = err
     })
 }
 
@@ -44,6 +50,9 @@ async function changeLedStatus(change) {
     .then(response => {
       // console.log(response)
     })
+    .catch(err => {
+      message.innerHTML = err
+    })
 }
 
 async function initialize(port) {
@@ -60,6 +69,9 @@ async function initialize(port) {
     .then(response => {
       // console.log(response)
     })
+    .catch(err => {
+      message.innerHTML = err
+    })
 }
 
 async function getInitializedStatus() {
@@ -72,5 +84,8 @@ async function getInitializedStatus() {
     .then(result => {
       initialized = (result.initialized);
       return result.initialized;
+    })
+    .catch(err => {
+      message.innerHTML = err
     })
 }
