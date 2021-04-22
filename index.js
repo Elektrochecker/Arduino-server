@@ -4,11 +4,18 @@ const express = require("express");
 const cors = require("cors");
 const ip = require("ip");
 const app = express();
-const hostingPORT = 8081;
+const hostingPORT = 80;
 
 app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'web')));
+
+app.all('/*', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 
 app.listen(
     hostingPORT, "0.0.0.0",
@@ -56,18 +63,18 @@ async function main() {
     }
 }
 
-app.get("/led", (req, res) => {
+app.get("/led", cors(), (req, res) => {
     res.status(200).send({
         ledArray: led,
     })
 });
 
-app.get("/", (req, res) => {
+app.get("/", cors(), (req, res) => {
     // let { port:newCOM } = req.body
     res.render("web/index.html");
 });
 
-app.post("/init", (req, res) => {
+app.post("/init", cors(), (req, res) => {
     let {
         port: port
     } = req.body;
@@ -75,7 +82,7 @@ app.post("/init", (req, res) => {
     res.status(200).send(`initialized on port &{port}`)
 })
 
-app.get("/init", (req, res) => {
+app.get("/init", cors(), (req, res) => {
     if (!!board) {
         res.status(200).send({
             initialized: true,
@@ -87,7 +94,7 @@ app.get("/init", (req, res) => {
     }
 })
 
-app.post("/led/change", (req, res) => {
+app.post("/led/change", cors(), (req, res) => {
     let {
         changeLed: changeLed
     } = req.body;
@@ -114,7 +121,7 @@ app.post("/led/change", (req, res) => {
     });
 })
 
-app.post("/led/set", (req, res) => {
+app.post("/led/set", cors(), (req, res) => {
     let {
         newState: newState
     } = req.body;

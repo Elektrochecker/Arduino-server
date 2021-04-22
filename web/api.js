@@ -1,4 +1,4 @@
-let localPORT = 3000;
+let localPORT = 80;
 
 async function getLedStatus() {
   return await fetch(`http://localhost:${localPORT}/led`, {
