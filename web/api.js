@@ -1,8 +1,11 @@
 let localPORT = 80;
+let ip = ""
+ip =  ip || "localhost"
 
 async function getLedStatus() {
-  return await fetch(`http://localhost:${localPORT}/led`, {
+  return await fetch(`http://${ip}:${localPORT}/led`, {
       method: "GET",
+      mode: "cors",
     })
     .then(response => {
       return response.json();
@@ -18,7 +21,7 @@ async function getLedStatus() {
 }
 
 async function setLedStatus(newArray) {
-  return await fetch(`http://localhost:${localPORT}/led/set`, {
+  return await fetch(`http://${ip}:${localPORT}/led/set`, {
       method: "POST",
       mode: "cors",
       body: JSON.stringify({
@@ -37,7 +40,7 @@ async function setLedStatus(newArray) {
 }
 
 async function changeLedStatus(change) {
-  return await fetch(`http://localhost:${localPORT}/led/change`, {
+  return await fetch(`http://${ip}:${localPORT}/led/change`, {
       method: "POST",
       mode: "cors",
       body: JSON.stringify({
@@ -56,7 +59,7 @@ async function changeLedStatus(change) {
 }
 
 async function initialize(port) {
-  return await fetch(`http://localhost:${localPORT}/init`, {
+  return await fetch(`http://${ip}:${localPORT}/init`, {
       method: "POST",
       mode: "cors",
       body: JSON.stringify({
@@ -75,7 +78,7 @@ async function initialize(port) {
 }
 
 async function getInitializedStatus() {
-  await fetch(`http://localhost:${localPORT}/init`, {
+  await fetch(`http://${ip}:${localPORT}/init`, {
       method: "GET",
     })
     .then(response => {
