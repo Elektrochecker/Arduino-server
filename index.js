@@ -22,6 +22,7 @@ app.listen(
     () => console.log(`live at http://localhost:${hostingPORT} \n or http://${ip.address()}:${hostingPORT}`)
 )
 
+let arduinoPort;
 let led = [false, false, false, false];
 let HIGH = 0x01;
 let LOW = 0x00;
@@ -35,10 +36,12 @@ let initBoard = com => {
     }
     if (com == "AUTO" || com == "") {
         board = new arduino.Board();
+        arduinoPort = "Automatic"
     } else {
         board = new arduino.Board({
             port: com,
         });
+        arduinoPort = com;
     }
     runArduino();
 }
@@ -86,6 +89,7 @@ app.get("/init", cors(), (req, res) => {
     if (!!board) {
         res.status(200).send({
             initialized: true,
+            port:arduinoPort
         });
     } else {
         res.status(200).send({

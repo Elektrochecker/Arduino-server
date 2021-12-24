@@ -1,3 +1,9 @@
 #messageText {
+    padding: 8px;
     color: hsl(0, 0%, 75%);
+    font-family: arial;
+}
+
+.p5Canvas {
+    padding: 8px;
 }

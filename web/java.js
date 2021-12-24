@@ -8,7 +8,7 @@ async function setup() {
   if (!initialized) {
     message.innerHTML = "awaiting initialization"
     await initialize(
-      prompt("port of Arduino:")
+      prompt("port of Arduino: leave blank for AUTO")
     )
     message.innerHTML = "running..."
   } else {
@@ -34,7 +34,7 @@ function draw() {
 }
 
 function mousePressed() {
-  if (mouseY > scl) {
+  if (mouseX > scl * 4) {
     return false;
   } else {
     x = Math.floor(mouseX / scl)
@@ -42,13 +42,13 @@ function mousePressed() {
   }
 }
 
-function touchStarted() {
-  let y = touches[0].y;
-  let x = touches[0].x;
-  if (y > scl) {
-    return false;
-  } else {
-    x = Math.floor(x / scl)
-    changeLedStatus(x)
-  }
-}
+// function touchStarted() {
+//   let y = touches[0].y;
+//   let x = touches[0].x;
+//   if (x > scl * 4) {
+//     return false;
+//   } else {
+//     x = Math.floor(x / scl)
+//     changeLedStatus(x)
+//   }
+// }
